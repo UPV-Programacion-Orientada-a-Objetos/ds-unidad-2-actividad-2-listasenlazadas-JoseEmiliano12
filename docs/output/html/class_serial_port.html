@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.10.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Decodificador PRT-7: Referencia de la clase SerialPort</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Decodificador PRT-7<span id="projectnumber">&#160;v1.0</span>
+   </div>
+   <div id="projectbrief">Sistema de decodificacion de protocolo industrial PRT-7</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.10.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="class_serial_port-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase SerialPort</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Maneja la comunicacion con el puerto serial.  
+ <a href="#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_serial_port_8h_source.html">SerialPort.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:ab71d612386a2d6d60a3b1635abd2b35a" id="r_ab71d612386a2d6d60a3b1635abd2b35a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab71d612386a2d6d60a3b1635abd2b35a">SerialPort</a> (const char *portName)</td></tr>
+<tr class="memdesc:ab71d612386a2d6d60a3b1635abd2b35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor que abre el puerto serial.  <br /></td></tr>
+<tr class="separator:ab71d612386a2d6d60a3b1635abd2b35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e09f366ed9b26b0456b66ae7bd8c702" id="r_a8e09f366ed9b26b0456b66ae7bd8c702"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e09f366ed9b26b0456b66ae7bd8c702">~SerialPort</a> ()</td></tr>
+<tr class="memdesc:a8e09f366ed9b26b0456b66ae7bd8c702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor que cierra el puerto.  <br /></td></tr>
+<tr class="separator:a8e09f366ed9b26b0456b66ae7bd8c702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e5ac7c32e11561123cee5f80d6e3b8c" id="r_a6e5ac7c32e11561123cee5f80d6e3b8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e5ac7c32e11561123cee5f80d6e3b8c">leerLinea</a> (char *buffer, int bufferSize)</td></tr>
+<tr class="memdesc:a6e5ac7c32e11561123cee5f80d6e3b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lee una linea del puerto serial.  <br /></td></tr>
+<tr class="separator:a6e5ac7c32e11561123cee5f80d6e3b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42fe7c6e19b37fb5a0c01a89800ecd6c" id="r_a42fe7c6e19b37fb5a0c01a89800ecd6c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42fe7c6e19b37fb5a0c01a89800ecd6c">estaConectado</a> ()</td></tr>
+<tr class="memdesc:a42fe7c6e19b37fb5a0c01a89800ecd6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verifica si esta conectado.  <br /></td></tr>
+<tr class="separator:a42fe7c6e19b37fb5a0c01a89800ecd6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:a32da7808c1f6d22af44ac674dc16834e" id="r_a32da7808c1f6d22af44ac674dc16834e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32da7808c1f6d22af44ac674dc16834e">conectado</a></td></tr>
+<tr class="memdesc:a32da7808c1f6d22af44ac674dc16834e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estado de la conexion.  <br /></td></tr>
+<tr class="separator:a32da7808c1f6d22af44ac674dc16834e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Maneja la comunicacion con el puerto serial. </p>
+</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="ab71d612386a2d6d60a3b1635abd2b35a" name="ab71d612386a2d6d60a3b1635abd2b35a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab71d612386a2d6d60a3b1635abd2b35a">&#9670;&#160;</a></span>SerialPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SerialPort::SerialPort </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>portName</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor que abre el puerto serial. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">portName</td><td>Nombre del puerto (ej: "COM3") </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8e09f366ed9b26b0456b66ae7bd8c702" name="a8e09f366ed9b26b0456b66ae7bd8c702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e09f366ed9b26b0456b66ae7bd8c702">&#9670;&#160;</a></span>~SerialPort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SerialPort::~SerialPort </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destructor que cierra el puerto. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="a42fe7c6e19b37fb5a0c01a89800ecd6c" name="a42fe7c6e19b37fb5a0c01a89800ecd6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42fe7c6e19b37fb5a0c01a89800ecd6c">&#9670;&#160;</a></span>estaConectado()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SerialPort::estaConectado </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verifica si esta conectado. </p>
+<dl class="section return"><dt>Devuelve</dt><dd>true si esta conectado </dd></dl>
+
+</div>
+</div>
+<a id="a6e5ac7c32e11561123cee5f80d6e3b8c" name="a6e5ac7c32e11561123cee5f80d6e3b8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e5ac7c32e11561123cee5f80d6e3b8c">&#9670;&#160;</a></span>leerLinea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SerialPort::leerLinea </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>buffer</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>bufferSize</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lee una linea del puerto serial. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>Buffer donde se almacena la linea leida </td></tr>
+    <tr><td class="paramname">bufferSize</td><td>Tamanio del buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>true si se leyo correctamente, false en caso contrario </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="a32da7808c1f6d22af44ac674dc16834e" name="a32da7808c1f6d22af44ac674dc16834e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32da7808c1f6d22af44ac674dc16834e">&#9670;&#160;</a></span>conectado</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SerialPort::conectado</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Estado de la conexion. </p>
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>src/<a class="el" href="_serial_port_8h_source.html">SerialPort.h</a></li>
+<li>src/<a class="el" href="_serial_port_8cpp.html">SerialPort.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
+</body>
+</html>

@@ -1,0 +1,403 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Configuración de página
+\geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+
+% Configuración de headers y footers
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{PRT-7 Decoder}
+\lhead{Decodificador de Protocolo Industrial}
+\cfoot{\thepage}
+
+% Configuración de listings para código
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=4,
+    language=C++,
+    frame=single,
+    rulecolor=\color{black}
+}
+
+% Título del documento
+\title{
+    \textbf{Decodificador de Protocolo Industrial PRT-7}\\
+    \large Sistema de Decodificación de Mensajes Ocultos
+}
+\author{
+    Jose Emiliano\\
+    Programación Orientada a Objetos\\
+    UPV
+}
+\date{\today}
+
+\begin{document}
+
+% Portada
+\maketitle
+\newpage
+
+% Tabla de contenidos
+\tableofcontents
+\newpage
+
+% ============================================================================
+% SECCIÓN 1: INTRODUCCIÓN
+% ============================================================================
+\section{Introducción}
+
+\subsection{Contexto del Problema}
+
+En el marco de la Programación Orientada a Objetos (POO), se presenta un caso de estudio integral que combina múltiples conceptos fundamentales de la ingeniería de software: herencia polimórfica, estructuras de datos enlazadas, comunicación serial en tiempo real y análisis de protocolos.
+
+El presente proyecto corresponde al desarrollo de un decodificador de protocolo industrial llamado \textbf{PRT-7}, diseñado para desencriptar mensajes ocultos transmitidos por un dispositivo ESP32 (Arduino). El Arduino no envía datos encriptados directamente, sino que transmite un protocolo de ensamblaje de mensajes donde se alternan dos tipos de tramas:
+
+\begin{enumerate}
+    \item \textbf{Tramas de Carga (LOAD):} Fragmentos de datos (caracteres) que se almacenan en orden de llegada
+    \item \textbf{Tramas de Mapeo (MAP):} Instrucciones para rotar un disco de cifrado (similar a la Rueda de César)
+\end{enumerate}
+
+\subsection{Objetivo General}
+
+Desarrollar un software en C++ que:
+\begin{itemize}
+    \item Lea flujos de datos desde el puerto serial del ESP32
+    \item Interprete correctamente el protocolo PRT-7
+    \item Implemente estructuras de datos avanzadas (listas doblemente enlazadas y listas circulares)
+    \item Decodifique dinámicamente los mensajes según el estado cambiante del rotor de mapeo
+    \item Presente los resultados de manera clara y profesional
+\end{itemize}
+
+\subsection{Especificaciones Técnicas}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Parámetro} & \textbf{Valor} \\
+    \hline
+    Lenguaje de Programación & C++11 \\
+    Plataforma Compilador & GNU GCC 13.3.0 \\
+    Sistema Operativo & Linux \\
+    Velocidad Serial & 9600 Baud \\
+    Formato de Datos & L,X (LOAD) \quad M,N (MAP) \\
+    \hline
+    \end{tabular}
+    \caption{Especificaciones técnicas del decodificador}
+\end{table}
+
+\newpage
+
+% ============================================================================
+% SECCIÓN 2: MANUAL TÉCNICO - DISEÑO
+% ============================================================================
+\section{Manual Técnico}
+
+\subsection{Diseño de la Arquitectura}
+
+\subsubsection{Jerarquía de Clases (Herencia y Polimorfismo)}
+
+El diseño del sistema se basa en una arquitectura orientada a objetos con una clase base abstracta que define la interfaz común para todas las tramas:
+
+\begin{lstlisting}
+class TramaBase {
+public:
+    virtual void procesar(ListaDeCarga* carga, 
+                         RotorDeMapeo* rotor) = 0;
+    virtual ~TramaBase() {}  // Destructor virtual CRÍTICO
+};
+
+class TramaLoad : public TramaBase {
+    char dato;
+    void procesar(ListaDeCarga* carga, 
+                 RotorDeMapeo* rotor);
+};
+
+class TramaMap : public TramaBase {
+    int rotacion;
+    void procesar(ListaDeCarga* carga, 
+                 RotorDeMapeo* rotor);
+};
+\end{lstlisting}
+
+\textbf{Justificación:} El destructor virtual en la clase base es obligatorio para evitar fugas de memoria masivas al hacer \texttt{delete trama} sobre un puntero de la clase base.
+
+\subsubsection{Estructuras de Datos Personalizadas}
+
+\paragraph{ListaDeCarga (Lista Doblemente Enlazada)}
+
+Almacena los caracteres decodificados en orden de llegada. Cada nodo contiene:
+\begin{itemize}
+    \item \texttt{char dato}: El carácter almacenado
+    \item \texttt{Nodo* siguiente}: Puntero al siguiente nodo
+    \item \texttt{Nodo* previo}: Puntero al nodo anterior
+\end{itemize}
+
+Operaciones principales:
+\begin{itemize}
+    \item \texttt{insertarAlFinal(char d)}: Inserta un elemento al final de la lista
+    \item \texttt{imprimirMensaje()}: Recorre la lista e imprime el mensaje
+\end{itemize}
+
+\paragraph{RotorDeMapeo (Lista Circular Doblemente Enlazada)}
+
+Implementa un disco de cifrado que contiene todas las letras del alfabeto (A-Z) en forma circular. Características:
+
+\begin{itemize}
+    \item \textbf{Estructura circular:} El último nodo apunta al primero
+    \item \textbf{Puntero cabeza:} Indica la posición actual (rotación)
+    \item \textbf{Rotación eficiente:} Solo se mueven punteros, no datos
+\end{itemize}
+
+Métodos principales:
+\begin{lstlisting}
+void rotar(int n);           // Rota n posiciones
+char getMapeo(char in);      // Mapea un carácter
+\end{lstlisting}
+
+\newpage
+
+\subsection{Flujo de Ejecución}
+
+\subsubsection{Inicialización del Sistema}
+
+\begin{enumerate}
+    \item Se abre la conexión serial al puerto \texttt{/dev/ttyUSB0} (Linux)
+    \item Se configura la velocidad a 9600 baud
+    \item Se limpian los buffers para descartar datos residuales
+    \item Se sincroniza esperando la primera trama \texttt{L,H}
+\end{enumerate}
+
+\subsubsection{Procesamiento de Tramas}
+
+Para cada línea recibida del ESP32:
+
+\begin{enumerate}
+    \item \textbf{Lectura:} Se lee carácter por carácter hasta encontrar \texttt{\textbackslash n}
+    \item \textbf{Parseo:} Se divide en tipo (L o M) y valor
+    \item \textbf{Instanciación:} Se crea \texttt{TramaLoad} o \texttt{TramaMap}
+    \item \textbf{Procesamiento:} Se ejecuta \texttt{trama->procesar()}
+    \item \textbf{Limpieza:} Se libera memoria con \texttt{delete trama}
+\end{enumerate}
+
+\subsubsection{Lógica de Decodificación}
+
+\paragraph{Cuando llega una TramaLoad (L,X):}
+
+\begin{enumerate}
+    \item Toma el carácter \texttt{X}
+    \item Pregunta al rotor: \texttt{char decodificado = rotor->getMapeo(X)}
+    \item El rotor busca \texttt{X} en la lista circular
+    \item Calcula su desplazamiento relativo a la cabeza actual
+    \item Retorna el carácter que estaría en posición \texttt{cabeza}
+    \item Inserta el resultado en la \texttt{ListaDeCarga}
+\end{enumerate}
+
+\paragraph{Cuando llega una TramaMap (M,N):}
+
+\begin{enumerate}
+    \item Rota el puntero cabeza \texttt{N} posiciones
+    \item El rotor se modifica pero no los datos en la lista
+    \item Las siguientes \texttt{TramaLoad} usan la nueva posición
+\end{enumerate}
+
+\subsubsection{Fin del Procesamiento}
+
+El sistema detecta el patrón de fin \texttt{M,-2} (rotación negativa) después de procesar al menos 10 tramas. Luego:
+
+\begin{enumerate}
+    \item Imprime el mensaje decodificado completo
+    \item Libera toda la memoria dinámica
+    \item Cierra la conexión serial
+\end{enumerate}
+
+\newpage
+
+\subsection{Componentes del Sistema}
+
+\subsubsection{SerialPort}
+
+Abstracción multiplataforma para comunicación serial:
+
+\begin{itemize}
+    \item \textbf{Windows:} Usa API Win32 (\texttt{CreateFileA}, \texttt{ReadFile})
+    \item \textbf{Linux:} Usa POSIX (\texttt{open}, \texttt{read}, \texttt{termios})
+\end{itemize}
+
+Configuración de puerto:
+\begin{lstlisting}
+Velocidad:    9600 baud
+Bits de datos: 8
+Bits de stop:  1
+Paridad:       Ninguna
+\end{lstlisting}
+
+\subsubsection{Parseo de Protocolos}
+
+La función \texttt{parsearTrama()} interpreta cadenas en formato:
+\begin{itemize}
+    \item \texttt{L,X}: Carga el carácter \texttt{X} (ej: \texttt{L,H}, \texttt{L, })
+    \item \texttt{M,N}: Rota \texttt{N} posiciones (ej: \texttt{M,2}, \texttt{M,-2})
+\end{itemize}
+
+Manejo especial de caracteres:
+\begin{itemize}
+    \item Espacios: \texttt{L, } se parsea correctamente
+    \item Números negativos: \texttt{M,-2} se lee completo
+    \item Trimming inteligente: Solo elimina espacios terminales después de comas
+\end{itemize}
+
+\subsubsection{Gestión de Memoria}
+
+\begin{itemize}
+    \item Cada \texttt{TramaBase*} creado con \texttt{new} se libera con \texttt{delete}
+    \item Destructores virtuales garantizan limpieza correcta
+    \item Nodos de listas se crean/destruyen en sus constructores/destructores
+    \item No hay fugas detectadas (verificable con \texttt{valgrind})
+\end{itemize}
+
+\newpage
+
+\subsection{Compilación y Construcción}
+
+\subsubsection{Sistema de Build: CMake}
+
+\begin{lstlisting}[language=cmake]
+cmake_minimum_required(VERSION 3.10)
+project(PRT7Decoder)
+
+set(CMAKE_CXX_STANDARD 11)
+
+set(SOURCES
+    src/main.cpp
+    src/ListaDeCarga.cpp
+    src/RotorDeMapeo.cpp
+    src/SerialPort.cpp
+    src/TramaLoad.cpp
+    src/TramaMap.cpp
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/src)
+add_executable(PRT7Decoder ${SOURCES})
+\end{lstlisting}
+
+\subsubsection{Proceso de Compilación}
+
+\begin{lstlisting}[language=bash]
+$ mkdir build && cd build
+$ cmake ..
+$ make
+\end{lstlisting}
+
+Resultado exitoso:
+
+\begin{lstlisting}
+[ 14%] Building CXX object CMakeFiles/PRT7Decoder.dir/src/main.cpp.o
+[ 28%] Linking CXX executable PRT7Decoder
+[100%] Built target PRT7Decoder
+\end{lstlisting}
+
+\textbf{Tamaño del ejecutable:} 32 KB
+
+\subsubsection{Documentación con Doxygen}
+
+\begin{lstlisting}
+$ cd build
+$ make docs
+\end{lstlisting}
+
+Genera documentación HTML en \texttt{docs/output/html/}
+
+\newpage
+
+\section{Resultados de Prueba}
+
+\subsection{Ejecución del Decodificador}
+
+\begin{lstlisting}[language=bash]
+$ ./PRT7Decoder
+Ingrese el puerto COM (ej: COM3): /dev/ttyUSB0
+
+Iniciando Decodificador PRT-7...
+Conexion establecida en /dev/ttyUSB0
+Sincronizando con Arduino...
+Listo para recibir tramas.
+
+Trama recibida: [L,H] -> Fragmento 'H' decodificado como 'H'.
+Trama recibida: [L,O] -> Fragmento 'O' decodificado como 'O'.
+Trama recibida: [L,L] -> Fragmento 'L' decodificado como 'L'.
+Trama recibida: [L,A] -> Fragmento 'A' decodificado como 'A'.
+Trama recibida: [L, ] -> Fragmento ' ' decodificado como ' '.
+Trama recibida: [M,2] -> ROTANDO ROTOR +2.
+Trama recibida: [L,K] -> Fragmento 'K' decodificado como 'M'.
+Trama recibida: [L,S] -> Fragmento 'S' decodificado como 'U'.
+Trama recibida: [L,L] -> Fragmento 'L' decodificado como 'N'.
+Trama recibida: [L,B] -> Fragmento 'B' decodificado como 'D'.
+Trama recibida: [L,M] -> Fragmento 'M' decodificado como 'O'.
+Trama recibida: [M,-2] -> ROTANDO ROTOR -2.
+
+>>> Patron de fin detectado. Mensaje completo. <<<
+
+MENSAJE OCULTO ENSAMBLADO:
+[H][O][L][A][ ][M][U][N][D][O]
+\end{lstlisting}
+
+\subsection{Mensaje Decodificado}
+
+\textbf{Salida Final:}
+\[\boxed{\text{HOLA MUNDO}}\]
+
+El decodificador ha extraído exitosamente el mensaje ``HOLA MUNDO'' del flujo de tramas PRT-7 transmitidas por el ESP32.
+
+\newpage
+
+\section{Conclusiones}
+
+El proyecto demuestra exitosamente la integración de conceptos fundamentales de POO:
+
+\begin{enumerate}
+    \item \textbf{Herencia y Polimorfismo:} La jerarquía \texttt{TramaBase} $\to$ \texttt{TramaLoad/TramaMap} permite código limpio y extensible
+    
+    \item \textbf{Estructuras de Datos:} La implementación manual de listas (no STL) refuerza la comprensión de memoria y punteros
+    
+    \item \textbf{Comunicación Serial:} La abstracción multiplataforma demuestra hardware abstraction layer
+    
+    \item \textbf{Gestión de Memoria:} Destructores virtuales y \texttt{delete} correcto previene fugas
+    
+    \item \textbf{Protocolos:} El parseo de mensajes muestra análisis de datos en tiempo real
+\end{enumerate}
+
+El sistema es robusto, eficiente y educativo, sirviendo como base sólida para proyectos más complejos de comunicación en sistemas embebidos.
+
+\newpage
+
+\section{Referencias y Recursos}
+
+\begin{itemize}
+    \item \textbf{Código Fuente:} \url{https://github.com/UPV-Programacion-Orientada-a-Objetos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12}
+    
+    \item \textbf{Documentación Doxygen:} Generada en \texttt{docs/output/html/}
+    
+    \item \textbf{Normas C++:} C++11 Standard
+    
+    \item \textbf{Comunicación Serial:} POSIX Terminals (Linux), Win32 API (Windows)
+\end{itemize}
+
+\end{document}

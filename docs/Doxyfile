@@ -1,0 +1,60 @@
+# Configuracion de Doxygen para PRT7-Decoder
+
+# Informacion del proyecto
+PROJECT_NAME           = "Decodificador PRT-7"
+PROJECT_NUMBER         = "v1.0"
+PROJECT_BRIEF          = "Sistema de decodificacion de protocolo industrial PRT-7"
+PROJECT_LOGO           = 
+
+# Directorios
+OUTPUT_DIRECTORY       = /home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/docs/output
+INPUT                  = /home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/src /home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/docs/mainpage.md
+FILE_PATTERNS          = *.cpp *.h *.md
+RECURSIVE              = YES
+EXCLUDE                = 
+EXCLUDE_PATTERNS       = */build/* */docs/output/* */arduino/*
+
+# Pagina principal - IMPORTANTE: usar el nuevo archivo
+USE_MDFILE_AS_MAINPAGE = /home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/docs/mainpage.md
+
+# Extraccion de codigo
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Generacion de graficos
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = YES
+COLLABORATION_GRAPH    = YES
+INCLUDE_GRAPH          = YES
+GRAPHICAL_HIERARCHY    = YES
+
+# Generacion HTML
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_GAMMA  = 80
+HTML_DYNAMIC_SECTIONS  = YES
+
+# Generacion LaTeX
+GENERATE_LATEX         = NO
+
+# Opciones de salida
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+
+# Idioma
+OUTPUT_LANGUAGE        = Spanish
+
+# Opciones adicionales
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_FOR_C  = NO
+BUILTIN_STL_SUPPORT    = YES
+
+# Markdown
+MARKDOWN_SUPPORT       = YES

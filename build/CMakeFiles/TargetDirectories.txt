@@ -1,0 +1,4 @@
+/home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/build/CMakeFiles/PRT7Decoder.dir
+/home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/build/CMakeFiles/docs.dir
+/home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/build/CMakeFiles/edit_cache.dir
+/home/emiliano/Documentos/ds-unidad-2-actividad-2-listasenlazadas-JoseEmiliano12/build/CMakeFiles/rebuild_cache.dir
